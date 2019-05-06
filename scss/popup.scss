@@ -1,0 +1,18 @@
+body {
+  padding: 20px;
+  width: 500px;
+  text-align: center;
+}
+
+.data-list {
+  td > span.text-truncate {
+    width: 320px;
+    display: block;
+  }
+}
+
+.btn {
+  .fa {
+    margin-right: 5px;
+  }
+}

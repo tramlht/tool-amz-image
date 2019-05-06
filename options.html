@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Options page</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/options.css">
+
+    <script type="text/javascript" src="js/getHtmlPage.js"></script>
+    <script type="text/javascript" src="js/utils.js"></script>
+
+</head>
+<body>
+  <div class="options-wrap">
+    <!-- <form id="pushDataToServer"  method="POST"> -->
+        <div class="form-row align-items-center">
+            <div class="col">
+                <h2 class="text-center">Load234 234234234 File</h2>
+                <div class="load-file">
+                    <div class="csv">
+                        <label>Load CSV File Need Get Data</label>
+                        <input id="id-csvfiles" type="file" name="csvfile">
+                        <input id="data-csvfile" type="hidden" name="data-csvfile" >
+                    </div>
+
+                    <div class="function-work">
+                        <label>Select function</label>
+                        <div class="data">
+                            <select class="form-control-data" id="function-template-data">
+                                <option value="get-data">Get Data</option>
+                                <option value="push-data">Push Data To Server</option>
+                            </select>
+                        </div>
+                        <div class="mockup">
+                            <select class="form-control-mockup" id="function-template-mockup">
+                                <option value="none">None</option>
+                                <option value="merge-mockup">Merge Data with Mockup</option>
+                            </select>
+                            <div class="">
+                                <lable>Load CSV File List Template Mockup</lable>
+                                <input id="id-template-mockkup" type="file" name="csvfile">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-auto">
+                        <button id="btn-run-data">Run Data</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <!-- </form> -->
+  </div>
+  <table id='id-table-result'>
+      <tbody>
+
+      </tbody>
+  </table>
+</body>
+<script src="options.js"></script>
+
+</html>
