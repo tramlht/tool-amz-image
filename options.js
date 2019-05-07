@@ -115,12 +115,7 @@ function doScrap(){
             x.appendChild(y);
             console.log("Element ready, do merge Image");
             console.log("element");
-            let data = JSON.parse('{}');
-            data.product_Title = item.productTitle;
-            data.product_AmzUrl = element.HEADER1;
-            data.img_url = item.imgUrl;
-            data.mockup_img_url=mockupURL;
-            /*Image2Base64(item.imgUrl, 1000, 1000, function(imageDesign){
+            Image2Base64(item.imgUrl, 1000, 1000, function(imageDesign){
                 appendIMG(imageDesign,x);
                 console.log("imageDesign ready=======================================");
                 Image2Base64(mockupURL, 1000, 1000, function(imageMockup){
@@ -130,13 +125,19 @@ function doScrap(){
                         appendIMG(imageProduct,x);
                         console.log("data ready=======================================");
 
-                        //data.design_img=imageDesign;
-                        //data.product_final_img=imageProduct;
+                        let data = JSON.parse('{}');
+                        data.product_Title = item.productTitle;
+                        data.product_AmzUrl = element.HEADER1;
+                        data.img_url = item.imgUrl;
+                        data.mockup_img_url=mockupURL;
+                        data.design_img = imageDesign;
+                        data.product_final_img = 'imageProduct';
                         // showData(data);
+                         postDataToSever(data);
+
                     });
                 });
-            });*/
-            postDataToSever(data);
+            });
         });
     });
     printTable(productList);

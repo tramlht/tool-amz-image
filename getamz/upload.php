@@ -9,35 +9,76 @@ header('Cache-Control: no-cache, must-revalidate');
 header('Expires: Mon, 01 Jan 1996 00:00:00 GMT');
 header('Content-type: application/json; charset=UTF-8');
 $rawdata = file_get_contents('php://input');
-error_log(print_r('after load content', TRUE));
 
 
 $dataProductPost = $rawdata;
-$data_product    = json_decode($dataProductPost, true);
-error_log(print_r('after json_decode ', TRUE));
+$data_product = json_decode($dataProductPost, true);
+error_log(var_dump($data_product));
 
-if (!empty($data_product)) {
-    $title = $data_product->product_Title;
-    error_log(print_r($title, TRUE));
+$path='images/download/';
 
-    $product_Title = strtolower($title);
-    $nameImg       = str_replace(' ', '-', $product_Title);
-    //Save design
-    if ($data_product->design_img) {
-        $imgDesign = $data_product->design_img;
-        $file      = $nameImg . '.png';
-        error_log(print_r($file, TRUE));
-
-        base64ToImage($imgDesign, $file);
-        //$success = file_put_contents($file, $imgDesign);
+if(!empty($data_product)){
+    foreach($data_product as $key => $product) {
+        $title = $data_product[$key];
     }
 
-    //Save Product Mockup
+    if($data_product['product_Title']){
 
+        $title = $data_product['product_Title'];
+        error_log( print_r($title, TRUE) );
+
+        $product_Title = strtolower($title);
+        $nameImg = str_replace(' ', '-',$product_Title);
+    }
+    
+   
+    //Save Image by url
+    if($data_product['img_url']){
+        $imgUrl = $data_product['img_url'];
+        $file = $path . $nameImg . '.png';
+        $data = file_get_contents($imgUrl);
+        $success = file_put_contents($file, $data);
+        var_dump($success);
+        
+        //Save Product Mockup
+        if($data_product['mockup_img_url']){
+            $mockupUrl = $data_product['mockup_img_url'];
+            $fileMockup = $path . $nameImg;
+            mergeImages($mockupUrl, $imgUrl, $fileMockup);
+
+        }
+    }
+    
+    //Save design
+    /**if($data_product['design_img']) {
+        $imgDesign = $data_product['design_img'];
+        $file = $nameImg.'base64' . '.png';
+        error_log( print_r($file, TRUE) );
+
+        //base64ToImage($imgDesign,$file);
+        //$data = base64_decode($imgDesign);
+        //$file = UPLOAD_DIR . uniqid() . '.png';
+        $success = file_put_contents($file, $imgDesign);
+    }*/
+
+    
 }
 
-function base64ToImage($base64_string, $output_file)
-{
+function getContentToImage($image_url, $output_file) {
+    $file = basename($image_url); 
+
+    //Get the file
+    $content= file_get_contents($image_url);
+
+    //Store in the filesystem.
+    $fp = fopen($output_file, "w");
+
+
+    fwrite($fp, $content);
+    fclose($fp);
+}
+
+function base64ToImage($base64_string, $output_file) {
     $file = fopen($output_file, "wb");
 
     $data = explode(',', $base64_string);
@@ -48,8 +89,43 @@ function base64ToImage($base64_string, $output_file)
     return $output_file;
 }
 
+function mergeImages($mockupUrl, $imgUrl, $nameImg) {
+    var_dump($mockupUrl);
+    var_dump($imgUrl);
+    /*$dest = imagecreatefrompng($imgUrl);
+    $src = imagecreatefromjpeg($mockupUrl);
+    $file = $nameImg.'-mockup' . '.png'
+    
+    imagealphablending($dest, false);
+    imagesavealpha($dest, true);
+
+    $imageFinal = imagecopymerge($dest, $src, 10, 9, 0, 0, 181, 180, 100); //have to play with these numbers for it to work for you, etc.
+    var_dump($imageFinal);
+    $data = file_get_contents($imageFinal);
+    var_dump($data);
+    $success = file_put_contents($file, $data);*/
+    return $success;
+}
 
 //Response To Client
+
+// if you are doing ajax with application-json headers
+if (empty($_POST)) {
+    $_POST = json_decode(file_get_contents("php://input"), true) ? : [];
+}
+
+// usage
+echo json_response(200, 'working'); // {"status":true,"message":"working"}
+
+// array usage
+echo json_response(200, array(
+  'data' => array(1,2,3)
+  ));
+// {"status":true,"message":{"data":[1,2,3]}}
+
+// usage with error
+echo json_response(500, 'Server Error! Please Try Again!'); // {"status":false,"message":"Server Error! Please Try Again!"}
+
 function json_response($message = null, $code = 200)
 {
     // clear the old headers
@@ -65,33 +141,17 @@ function json_response($message = null, $code = 200)
         400 => '400 Bad Request',
         422 => 'Unprocessable Entity',
         500 => '500 Internal Server Error'
-    );
+        );
     // ok, validation error, or failure
-    header('Status: ' . $status[$code]);
-
+    header('Status: '.$status[$code]);
     // return the encoded json
     return json_encode(array(
-        'status'  => $code < 300 ? 1 : 0, // success or not?
-        'message' => $rawdata
-    ));
+        'status' => $code < 300 ? 1 : 0, // success or not?
+        'message' => 'Send done'
+        ));
 }
 
-// if you are doing ajax with application-json headers
-if (empty($_POST)) {
-    $_POST = json_decode(file_get_contents("php://input"), true) ?: [];
-}
 
-// usage
-echo json_response(200, 'working'); // {"status":true,"message":"working"}
-
-// array usage
-echo json_response(200, array(
-    'data' => array(1, 2, 3)
-));
-// {"status":true,"message":{"data":[1,2,3]}}
-
-// usage with error
-echo json_response(500, 'Server Error! Please Try Again!'); // {"status":false,"message":"Server Error! Please Try Again!"}
 return $data_product;
 
 ?>

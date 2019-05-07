@@ -419,7 +419,7 @@ function postDataToSever(data){
     var dataDecode = JSON.stringify(data);
     console.log(dataDecode);
     var xmlhttp = new XMLHttpRequest();   // new HttpRequest instance 
-    var theUrl = "http://local.naturalbeauty.vn/upload.php";
+    var theUrl = "http://dvbatdongsan.vn/tool-amz/upload.php";
     xmlhttp.open("POST", theUrl) ;
     xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     xmlhttp.onreadystatechange = function () {
@@ -460,12 +460,12 @@ function Image2Base64(url,width,height,callback){
                 var oc = document.createElement('canvas');
                 var octx = oc.getContext('2d');
             
-                oc.width = 10;
-                oc.height = 10;
-                octx.drawImage(img, 0, 0, 10, 10);
+                oc.width = 1000;
+                oc.height = 1000;
+                octx.drawImage(img, 0, 0, 1000, 1000);
             
                 // step 2
-                octx.drawImage(oc, 0, 0, 1000, 10);
+                octx.drawImage(oc, 0, 0, 1000, 1000);
             
                 // step 3, resize to final size
                 ctx.drawImage(oc, 0, 0, 1000, 10,
