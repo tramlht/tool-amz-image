@@ -451,25 +451,24 @@ function Image2Base64(url,width,height,callback){
             img.onload = function(){
                 var canvas = document.createElement('canvas');
                 var ctx = canvas.getContext('2d');
-                var ratio = 1000/img.width;
+                var ratio = width/img.width;
                 console.log(ratio);
                 // set size proportional to image
-                canvas.height = canvas.width =1000 ;
+                canvas.height = canvas.width =width ;
             
                 // step 1 - resize to 50%
                 var oc = document.createElement('canvas');
                 var octx = oc.getContext('2d');
             
-                oc.width = 1000;
-                oc.height = 1000;
-                octx.drawImage(img, 0, 0, 1000, 1000);
+                oc.width = width;
+                oc.height = height;
+                octx.drawImage(img, 0, 0, width, height);
             
                 // step 2
-                octx.drawImage(oc, 0, 0, 1000, 1000);
+                octx.drawImage(oc, 0, 0, width, height);
             
                 // step 3, resize to final size
-                ctx.drawImage(oc, 0, 0, 1000, 10,
-                0, 0, 10, 10);
+                ctx.drawImage(oc, 0, 0, width, height, 0, 0, width, height);
 
                 // var ctx = canvas.getContext("2d");
                 // ctx.drawImage(img,0, 0, width, height,0,0,img.width, img.height);

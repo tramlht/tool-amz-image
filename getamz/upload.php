@@ -50,16 +50,15 @@ if(!empty($data_product)){
     }
     
     //Save design
-    /**if($data_product['design_img']) {
-        $imgDesign = $data_product['design_img'];
-        $file = $nameImg.'base64' . '.png';
-        error_log( print_r($file, TRUE) );
+    if($data_product['product_final_img']) {
+        $imgDesign = $data_product['product_final_img'];
+        $file = $path . $nameImg.'-mockup' . '.jpeg';
 
-        //base64ToImage($imgDesign,$file);
+        base64ToImage($imgDesign,$file);
         //$data = base64_decode($imgDesign);
         //$file = UPLOAD_DIR . uniqid() . '.png';
-        $success = file_put_contents($file, $imgDesign);
-    }*/
+        //$success = file_put_contents($file, $imgDesign);
+    }
 
     
 }

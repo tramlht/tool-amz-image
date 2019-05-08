@@ -131,7 +131,7 @@ function doScrap(){
                         data.img_url = item.imgUrl;
                         data.mockup_img_url=mockupURL;
                         data.design_img = imageDesign;
-                        data.product_final_img = 'imageProduct';
+                        data.product_final_img = imageProduct;
                         // showData(data);
                          postDataToSever(data);
 
